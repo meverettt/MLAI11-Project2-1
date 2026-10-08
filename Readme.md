@@ -1,6 +1,22 @@
 # MLAI Group 11 Y1-S1 Project
 
-This is an unofficial fork of the ML-Agents Toolkit for Unity.
+This is an unofficial fork of the ML-Agents Toolkit for Unity. We will be focusing on using the Dungeon Escape game for this project.
+
+To start training, run the following command in a terminal in the project directory:
+
+```
+mlagents-learn <trainer-config-file> --run-id=<run-identifier>
+```
+
+Where <trainer-config-file> is the config file for the Dungeon Escape ("./config/poca/DungeonEscape.yaml") and <run-identifier> is a unique name to identify the results of the training run (i.e. the full training process, not just a single attempt).
+
+To resume training, run the following command in a terminal in the project directory:
+
+```
+mlagents-learn <trainer-config-file> --run-id=<run_identifier> --resume
+```
+
+Make sure to use the same config file and run ID, else it will not resume correctly.
 
 # Unity ML-Agents Toolkit
 
