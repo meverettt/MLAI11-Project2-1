@@ -1,3 +1,7 @@
+# MLAI Group 11 Y1-S1 Project
+
+This is an unofficial fork of the ML-Agents Toolkit for Unity.
+
 # Unity ML-Agents Toolkit
 
 [![docs badge](https://img.shields.io/badge/docs-reference-blue.svg)](https://docs.unity3d.com/Packages/com.unity.ml-agents@latest)
@@ -9,6 +13,7 @@
 **The Unity Machine Learning Agents Toolkit** (ML-Agents) is an open-source project that enables games and simulations to serve as environments for training intelligent agents. We provide implementations (based on PyTorch) of state-of-the-art algorithms to enable game developers and hobbyists to easily train intelligent agents for 2D, 3D and VR/AR games. Researchers can also use the provided simple-to-use Python API to train Agents using reinforcement learning, imitation learning, neuroevolution, or any other methods. These trained agents can be used for multiple purposes, including controlling NPC behavior (in a variety of settings such as multi-agent and adversarial), automated testing of game builds and evaluating different game design decisions pre-release. The ML-Agents Toolkit is mutually beneficial for both game developers and AI researchers as it provides a central platform where advances in AI can be evaluated on Unity’s rich environments and then made accessible to the wider research and game developer communities.
 
 ## Features
+
 - 17+ [example Unity environments](https://docs.unity3d.com/Packages/com.unity.ml-agents@latest/index.html?subfolder=/manual/Learning-Environment-Examples.html)
 - Support for multiple environment configurations and training scenarios
 - Flexible Unity SDK that can be integrated into your game or custom Unity scene
@@ -36,12 +41,10 @@ The table below shows our latest release, including our `develop` branch which i
 - The [Migration page](https://docs.unity3d.com/Packages/com.unity.ml-agents@latest/index.html?subfolder=/manual/Migrating.html) contains details on how to upgrade from earlier releases of the ML-Agents Toolkit.
 - The `com.unity.ml-agents` package is [verified](https://docs.unity3d.com/2020.1/Documentation/Manual/pack-safe.html) for Unity 2020.1 and later. Verified packages releases are numbered 1.0.x.
 
-|      **Version**       |  **Release Date**   |                                  **Source**                                   |                                                 **Documentation**                                                  |                                      **Download**                                      |                  **Python Package**                   |                                   **Unity Package**                                   |
-|:----------------------:|:-------------------:|:-----------------------------------------------------------------------------:|:------------------------------------------------------------------------------------------------------------------:|:--------------------------------------------------------------------------------------:|:-----------------------------------------------------:|:-------------------------------------------------------------------------------------:|
-|     **Release 23**     | **August 15, 2025** | **[source](https://github.com/Unity-Technologies/ml-agents/tree/release_23)** |              **[docs](https://docs.unity3d.com/Packages/com.unity.ml-agents@4.0/manual/index.html)**               | **[download](https://github.com/Unity-Technologies/ml-agents/archive/release_23.zip)** | **[1.1.0](https://pypi.org/project/mlagents/1.1.0/)** |                                       **4.0.0**                                       |
-| **develop (unstable)** |         --          |    [source](https://github.com/Unity-Technologies/ml-agents/tree/develop)     | [docs](https://github.com/Unity-Technologies/ml-agents/tree/develop/com.unity.ml-agents/Documentation~/index.md)   |    [download](https://github.com/Unity-Technologies/ml-agents/archive/develop.zip)     |                         --                            |                                          --                                           |
-
-
+|      **Version**       |  **Release Date**   |                                  **Source**                                   |                                                **Documentation**                                                 |                                      **Download**                                      |                  **Python Package**                   | **Unity Package** |
+| :--------------------: | :-----------------: | :---------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------: | :---------------------------------------------------: | :---------------: |
+|     **Release 23**     | **August 15, 2025** | **[source](https://github.com/Unity-Technologies/ml-agents/tree/release_23)** |             **[docs](https://docs.unity3d.com/Packages/com.unity.ml-agents@4.0/manual/index.html)**              | **[download](https://github.com/Unity-Technologies/ml-agents/archive/release_23.zip)** | **[1.1.0](https://pypi.org/project/mlagents/1.1.0/)** |     **4.0.0**     |
+| **develop (unstable)** |         --          |    [source](https://github.com/Unity-Technologies/ml-agents/tree/develop)     | [docs](https://github.com/Unity-Technologies/ml-agents/tree/develop/com.unity.ml-agents/Documentation~/index.md) |    [download](https://github.com/Unity-Technologies/ml-agents/archive/develop.zip)     |                          --                           |        --         |
 
 If you are a researcher interested in a discussion of Unity as an AI platform, see a pre-print of our [reference paper on Unity and the ML-Agents Toolkit](https://arxiv.org/abs/1809.02627).
 
@@ -69,16 +72,15 @@ Additionally, if you use the MA-POCA trainer in your research, we ask that you c
 }
 ```
 
-
 ## Additional Resources
 
-* [Unity Discussions](https://discussions.unity.com/tag/ml-agents)
-* [ML-Agents tutorials by CodeMonkeyUnity](https://www.youtube.com/playlist?list=PLzDRvYVwl53vehwiN_odYJkPBzcqFw110)
-* [Introduction to ML-Agents by Huggingface](https://huggingface.co/learn/deep-rl-course/en/unit5/introduction)
-* [Community created ML-Agents projects](https://discussions.unity.com/t/post-your-ml-agents-project/816756)
-* [ML-Agents models on Huggingface](https://huggingface.co/models?library=ml-agents)
-* [Blog posts](https://docs.unity3d.com/Packages/com.unity.ml-agents@latest/index.html?subfolder=/manual/Blog-posts.html)
-* [Discord](https://discord.com/channels/489222168727519232/1202574086115557446)
+- [Unity Discussions](https://discussions.unity.com/tag/ml-agents)
+- [ML-Agents tutorials by CodeMonkeyUnity](https://www.youtube.com/playlist?list=PLzDRvYVwl53vehwiN_odYJkPBzcqFw110)
+- [Introduction to ML-Agents by Huggingface](https://huggingface.co/learn/deep-rl-course/en/unit5/introduction)
+- [Community created ML-Agents projects](https://discussions.unity.com/t/post-your-ml-agents-project/816756)
+- [ML-Agents models on Huggingface](https://huggingface.co/models?library=ml-agents)
+- [Blog posts](https://docs.unity3d.com/Packages/com.unity.ml-agents@latest/index.html?subfolder=/manual/Blog-posts.html)
+- [Discord](https://discord.com/channels/489222168727519232/1202574086115557446)
 
 ## Community and Feedback
 
