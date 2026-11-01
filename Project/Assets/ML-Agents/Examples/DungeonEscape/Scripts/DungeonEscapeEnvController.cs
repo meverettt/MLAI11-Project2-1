@@ -70,8 +70,34 @@ public class DungeonEscapeEnvController : MonoBehaviour
     public GameObject Key;
     public GameObject Tombstone;
     private SimpleMultiAgentGroup m_AgentGroup;
+
+    // Our added reward settings (default values used for the settings if the YAML file doesn't specify).
+    private float m_GoalReward = 1f; // points received for escaping
+    private float m_StepPenalty = 0f; // points that are addded for every step (0 or a negative value)
+    private float m_CheckpointBonus = 0f; // extra points received for grabbing the key 
+    private bool m_UseShapedReward = false; // false = sparsed, and true = shaped
+    private float m_ShapingScale = 0.01f; // used with shaped rewards only to get small extra points when an agent gets closer to next goal
+    // below is for shaped rewards only
+    private Transform m_Door; // this is the locked door found at the start
+    private Transform m_CurrentGoal; // the current goal the team is working towards
+    private float m_BestDistance; // the closest distance the team has ever been to the current goal
+
+    
     void Start()
     {
+        // finding the locked door in the dungeon (needed for shaped rewards)
+        foreach(var t in GetComponentsInChildren<Transform>(true))
+        {
+            if(t.CompareTag("lock"))
+            {
+                m_Door = t;
+                break;
+            }
+        }
+        if(m_Door == null)
+        {
+            Debug.LogWarning("shaped rewards: no door (which has the tag 'lock') found so the door section skipped");
+        }
 
         // Get the ground's bounds
         areaBounds = ground.GetComponent<Collider>().bounds;
@@ -113,6 +139,15 @@ public class DungeonEscapeEnvController : MonoBehaviour
     void FixedUpdate()
     {
         m_ResetTimer += 1;
+        // If step_penalty = 0 then do nothing. Otherwise add it to the team's points (hence lose a little every step)
+        if (m_StepPenalty != 0f)
+        {
+            m_AgentGroup.AddGroupReward(m_StepPenalty);
+        }
+        if (m_UseShapedReward)
+        {
+            GiveShapedReward();
+        }
         if (m_ResetTimer >= MaxEnvironmentSteps && MaxEnvironmentSteps > 0)
         {
             m_AgentGroup.GroupEpisodeInterrupted();
@@ -136,13 +171,69 @@ public class DungeonEscapeEnvController : MonoBehaviour
 
     public void UnlockDoor()
     {
-        m_AgentGroup.AddGroupReward(1f);
+        m_AgentGroup.AddGroupReward(m_GoalReward); //instead of hardcoding goal reward to 1, we read escape reward from the YAML file
         StartCoroutine(GoalScoredSwapGroundMaterial(m_PushBlockSettings.goalScoredMaterial, 0.5f));
 
         print("Unlocked Door");
         m_AgentGroup.EndGroupEpisode();
 
         ResetScene();
+    }
+
+    // Method is called by an agent when it grabs the key and gives the team the checkpoint bonus (if checkpoint bonus = 0, then it does nothing)
+    public void KeyPickedUp()
+    {
+        if(m_CheckpointBonus != 0f)
+        {
+            m_AgentGroup.AddGroupReward(m_CheckpointBonus);
+        }
+    }
+
+    // gives a small reward whenever the team reaches closer to its next goal than reached before
+    void GiveShapedReward()
+    {
+        // function to determine which goal is the team working towards (dragon, key, or door)
+        Transform goal;
+        if(Key.activeSelf) goal = Key.transform;
+        else if (SomeoneHasKey()) goal = m_Door;
+        else goal = DragonsList[0].Agent.transform;
+
+        if(goal == null) return;
+
+        // determining how close the nearest agent is to that goal
+        float distance = float.MaxValue;
+        foreach(var item in AgentsList)
+        {
+            if (item.Agent.gameObject.activeSelf)
+            {
+                distance = Mathf.Min(distance, Vector3.Distance(item.Agent.transform.position, goal.position));
+            }
+        }
+
+        // if it is a new goal, then we start measuring from this point
+        if(goal != m_CurrentGoal)
+        {
+            m_CurrentGoal = goal;
+            m_BestDistance = distance; 
+            return;
+        }
+
+        // if we are closer to the goal than ever reached before, the team gets a small reward for its progress
+        if(distance < m_BestDistance)
+        {
+            m_AgentGroup.AddGroupReward(m_ShapingScale * (m_BestDistance - distance));
+            m_BestDistance = distance;
+        }
+    }
+
+    // helper function set to true if any agent currently alive in the game is carrying the key 
+    bool SomeoneHasKey()
+    {
+        foreach(var item in AgentsList)
+        {
+            if(item.Agent.gameObject.activeSelf && item.Agent.IHaveAKey) return true;
+        }
+        return false;
     }
 
     public void KilledByBaddie(PushAgentEscape agent, Collision baddieCol)
@@ -208,8 +299,21 @@ public class DungeonEscapeEnvController : MonoBehaviour
         return Quaternion.Euler(0, Random.Range(0.0f, 360.0f), 0);
     }
 
+    void ReadRewardSettings()
+    {
+        var settings = Academy.Instance.EnvironmentParameters;
+        m_GoalReward = settings.GetWithDefault("goal_reward", 1f);
+        m_StepPenalty = settings.GetWithDefault("step_penalty", 0f);
+        m_CheckpointBonus = settings.GetWithDefault("checkpoint_bonus", 0f);
+        m_UseShapedReward = settings.GetWithDefault("reward_type", 0f) > 0.5f; // 0 = sparse rewards, and 1 = shaped rewards
+        m_ShapingScale = settings.GetWithDefault("shaping_scale", 0.01f);
+    }
+
     void ResetScene()
     {
+        //Read our reward settings before beginning each training attempt
+        ReadRewardSettings();
+        m_CurrentGoal = null; //whenever new training attempt, shaped rewards should also be reset to fresh
 
         //Reset counter
         m_ResetTimer = 0;
