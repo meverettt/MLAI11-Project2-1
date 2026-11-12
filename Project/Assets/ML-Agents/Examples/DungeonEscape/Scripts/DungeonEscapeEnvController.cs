@@ -321,7 +321,6 @@ public class DungeonEscapeEnvController : MonoBehaviour
         m_CheckpointBonus = settings.GetWithDefault("checkpoint_bonus", 0f);
         m_UseShapedReward = settings.GetWithDefault("reward_type", 0f) > 0.5f; // 0 = sparse rewards, and 1 = shaped rewards
         m_ShapingScale = settings.GetWithDefault("shaping_scale", 0.01f);
-        Debug.Log($"reward_type={m_UseShapedReward} step_penalty={m_StepPenalty} shaping_scale={m_ShapingScale}");
     }
 
     void ResetScene()
