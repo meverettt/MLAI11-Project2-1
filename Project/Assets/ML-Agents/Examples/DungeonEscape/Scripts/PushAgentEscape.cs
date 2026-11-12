@@ -108,6 +108,7 @@ public class PushAgentEscape : Agent
             print("Picked up key");
             MyKey.SetActive(true);
             IHaveAKey = true;
+            m_GameController.KeyPickedUp(); // gives the team the checkpoint bonus if it's not 0
             col.gameObject.SetActive(false);
         }
     }
