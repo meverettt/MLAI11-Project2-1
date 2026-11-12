@@ -2,21 +2,17 @@
 
 This is an unofficial fork of the ML-Agents Toolkit for Unity. We will be focusing on using the Dungeon Escape game for this project.
 
-To start training, run the following command in a terminal in the project directory:
+## Running Data Collection
 
-```
-mlagents-learn <trainer-config-file> --run-id=<run-identifier>
-```
-
-Where <trainer-config-file> is the config file for the Dungeon Escape ("./config/poca/DungeonEscape.yaml") and <run-identifier> is a unique name to identify the results of the training run (i.e. the full training process, not just a single attempt).
-
-To resume training, run the following command in a terminal in the project directory:
-
-```
-mlagents-learn <trainer-config-file> --run-id=<run_identifier> --resume
-```
-
-Make sure to use the same config file and run ID, else it will not resume correctly.
+1. Open the project on Unity, go to the location of the project in a terminal
+2. In Unity, open Dungeon Escape scene from Examples
+3. In terminal, run ```conda activate <environment>```
+    - \<environment> is the name of the conda environment you have set up for the ML-Agents toolkit
+4. In terminal, to start running the data collection, run ```mlagents-learn config/poca/DungeonEscape_<test_num>.yaml --run-id=<run_id> --seed=1 --timeout-wait=300```
+    - \<test_num> is the name of the specific YAML file that you are running the test with 
+    - \<run_id> is a unique identifier for the training run 
+5. In Unity, press play on the scene
+    - After a certain number of steps (as defined in `summary_freq` in the YAML file you use), the terminal will print information about the run
 
 # Unity ML-Agents Toolkit
 
