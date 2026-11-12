@@ -150,6 +150,7 @@ public class DungeonEscapeEnvController : MonoBehaviour
         }
         if (m_ResetTimer >= MaxEnvironmentSteps && MaxEnvironmentSteps > 0)
         {
+            RecordAttempt(false); // the timer ran out, so could not escape
             m_AgentGroup.GroupEpisodeInterrupted();
             ResetScene();
         }
@@ -160,6 +161,7 @@ public class DungeonEscapeEnvController : MonoBehaviour
         m_NumberOfRemainingPlayers--;
         if (m_NumberOfRemainingPlayers == 0 || agent.IHaveAKey)
         {
+            RecordAttempt(false); // everyone in the game died or the agent that had the key died
             m_AgentGroup.EndGroupEpisode();
             ResetScene();
         }
@@ -171,6 +173,7 @@ public class DungeonEscapeEnvController : MonoBehaviour
 
     public void UnlockDoor()
     {
+        RecordAttempt(true); // means that the agents in the game have escaped
         m_AgentGroup.AddGroupReward(m_GoalReward); //instead of hardcoding goal reward to 1, we read escape reward from the YAML file
         StartCoroutine(GoalScoredSwapGroundMaterial(m_PushBlockSettings.goalScoredMaterial, 0.5f));
 
@@ -236,6 +239,16 @@ public class DungeonEscapeEnvController : MonoBehaviour
         return false;
     }
 
+    void RecordAttempt(bool escaped)
+    {
+        var stats = Academy.Instance.StatsRecorder;
+        stats.Add("Custom/Success", escaped ? 1f : 0f); // if agents escaped, write 1 or otherwise write 0
+        if(escaped)
+        {
+            stats.Add("Custom/StepsToEscape", m_ResetTimer); // m_ResetTimer already calculates the steps taken in current attempt (it uses it for the time limit)
+        }
+    }
+
     public void KilledByBaddie(PushAgentEscape agent, Collision baddieCol)
     {
         baddieCol.gameObject.SetActive(false);
@@ -287,6 +300,7 @@ public class DungeonEscapeEnvController : MonoBehaviour
 
     public void BaddieTouchedBlock()
     {
+        RecordAttempt(false); // the dragon escaped
         m_AgentGroup.EndGroupEpisode();
 
         // Swap ground material for a bit to indicate we scored.
